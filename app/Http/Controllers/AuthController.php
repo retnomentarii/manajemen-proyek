@@ -31,9 +31,9 @@ class AuthController extends Controller
         if (Auth::attempt($isLogin)) {
 
             if(Auth::user()->role =='karyawan'){
-                return redirect('/karyawan');
+                return redirect('/dashboard');
             }elseif(Auth::user()->role == 'client'){
-                return redirect('/client');
+                return redirect('/dashboard');
             }
             return redirect('/dashboard');
         }else{

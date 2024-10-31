@@ -23,7 +23,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'permissions:client'])->group(function () {
     Route::get('dashboard',  [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('admin', [AdminController::class, 'index'])->name('members.dashboard');
@@ -39,15 +39,19 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('admin/client', ClientController::class);
     Route::post('admin/client/{id}/update', [ClientController::class, 'update'])->name('client.update.single');
 
-     Route::middleware(['permissions:client'])->group(function () {
-        Route::get('/client-dashboard', [DashboardController::class, 'clientDashboard'])->name('dashboard.client');
-    });
 });
 
-Route::get('/karyawan', [AdminController::class, 'karyawan'])->middleware(['auth', 'permissions:karyawan']);
-Route::get('/client', [AdminController::class, 'client'])->middleware(['auth','permissions:client']);
 
+Route::middleware(['auth', 'permissions:karyawan'])->group(function () {
+    Route::get('dashboard',  [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('projects', ProjectController::class);
+    Route::post('admin/project/{id}/update', [ProjectController::class, 'update'])->name('project.update.single');
+
+    Route::resource('admin/client', ClientController::class);
+    Route::post('admin/client/{id}/update', [ClientController::class, 'update'])->name('client.update.single');
+
+});
 Route::resource('/profile/users', ProfileController::class)->names([
     'index' => 'profile.index',
     'create' => 'profile.create',

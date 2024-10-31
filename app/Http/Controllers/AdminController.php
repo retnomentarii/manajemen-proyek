@@ -18,15 +18,6 @@ class AdminController extends Controller
         return view('admin.members.index', compact('users'));
     }
     
-    
-    public function karyawan(){
-        $users = User::all();
-        return view('dashboardAdmin', compact('users'));
-    }
-    public function client(){
-        $users = User::all();
-        return view('dashboardClient', compact('users'));
-    }
 
     
     public function create()
